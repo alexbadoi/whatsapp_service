@@ -1,0 +1,11 @@
+proposal_detail_id,proposal_id,day_count,agoda_hotel_location_id,agoda_location_name,start_dt,end_dt,number_of_rooms,number_of_adults,number_of_children,children_ages_pipe_delimited,agoda_hotel_name,agoda_hodel_id,agoda_review_score,agoda_review_count,best_price_per_night,agoda_room_pic_pipe_delimited,agoda_hotel_pic_pipe_delimited,sleeps_count,room_price_per_night,risk_free_booking_binary,cancelation_deadline_dt,includes_breakfast_bainary,includeas_lunch_binary,includes_dinner_binary,bed_type,size_sqm
+1,1,1,,,,,,,,,,,,,,,,,,,,,,,,
+2,1,2,,,,,,,,,,,,,,,,,,,,,,,,
+3,1,3,,,,,,,,,,,,,,,,,,,,,,,,
+4,1,4,,,,,,,,,,,,,,,,,,,,,,,,
+5,1,5,,,,,,,,,,,,,,,,,,,,,,,,
+6,2,1,,,,,,,,,,,,,,,,,,,,,,,,
+7,2,2,,,,,,,,,,,,,,,,,,,,,,,,
+8,2,3,,,,,,,,,,,,,,,,,,,,,,,,
+9,2,4,,,,,,,,,,,,,,,,,,,,,,,,
+10,2,5,,,,,,,,,,,,,,,,,,,,,,,,
