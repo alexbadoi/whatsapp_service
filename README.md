@@ -26,6 +26,7 @@ All requests from the frontend to the WhatsApp API will go through the Go backen
 - Golang + Fiber
 - ReactJS
 - 
+- 
 ## Backend:
 - Use Golang with Fiber and GORM frameworks.
 - Implement endpoints for user login, QR code registration, and full chat functionality.
@@ -36,28 +37,11 @@ All requests from the frontend to the WhatsApp API will go through the Go backen
 - Modify the chat box for better screen fit.
 - Add a favorites section to pin contacts.
 - Enhance the contact card to integrate user-specific information and tags from the database.
-- **Admin Screen:** Create a page where a user can request a QR code and register their WhatsApp. This page will handle the output from the WhatsApp service for QR code registration.
-- **Chat App:** Develop a chat application for users to communicate. Ensure it can handle 3-4 concurrent users.
-
+- **Admin Screen:** Create a page where a user can request a QR code and register their WhatsApp. This page will handle the output from the WhatsApp service for QR code registration.- **Chat App:** Develop a chat application for users to communicate. Ensure it can handle 3-4 concurrent users.
 
 ## Deployment:
 - Deploy using Kubernetes.
 - Ensure the app handles 3-10 concurrent users with unique phone numbers for testing.
-
-## Architecture
-
-### Frontend:
-- Sends requests to the Go backend.
-
-### Go Backend:
-- Processes requests.
-- Forwards relevant requests to the WhatsApp API.
-- Returns responses to the frontend.
-
-### WhatsApp API:
-- https://github.com/chrishubert/whatsapp-api.git
-- Manages WhatsApp-specific tasks.
-- Communicates with the Go backend.
 
 ### Kubernetes Configuration
 
