@@ -22,9 +22,6 @@ Integrate the WhatsApp Web API into a custom CRM (Safari Expert) for chat functi
 - Deploy using Kubernetes.
 - Ensure the app handles 3-10 concurrent users with unique phone numbers for testing.
 
-## Budget:
-- $100
-
 ## Architecture
 
 ### Frontend:
