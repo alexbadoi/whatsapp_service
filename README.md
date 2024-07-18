@@ -1,12 +1,21 @@
-# Project Requirements
-
-## Experience Required:
-- Golang + Fiber
-- ReactJS
-
-## Objective:
+# Objective:
+the main ask is to implement a whatsap api service using kubernetes
 Integrate the WhatsApp Web API into a custom CRM (Safari Expert) for chat functionality and lead/sales management.
 
+## Data Structure:
+1. you can deploy a copy of the db loclaly by running db/db_dump_file.sql
+2. once the cat app is connected via qr code it should automaticlaly pull in and populate contact_whatsapp table with all available contacts from whstapp
+3. table tag_ref includes available tags which should be fed into the contact card - see Enhance the contact requirements in the frontend section.
+4. there is a tag_id field in contact ref this should be displayed on teh contact card in the chat app. 
+5. all chat data should be stored
+6. there are 3 available users in user_ref and they provide the login credential information for the web app
+7. be able to add a contact from chat app via + button this should populate contact_ref
+
+
+## Stack:
+- Golang + Fiber
+- ReactJS
+- 
 ## Backend:
 - Use Golang with Fiber and GORM frameworks.
 - Implement endpoints for user login, QR code registration, and full chat functionality.
