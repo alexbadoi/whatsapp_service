@@ -36,6 +36,7 @@ Integrate the WhatsApp Web API into a custom CRM (Safari Expert) for chat functi
 - Returns responses to the frontend.
 
 ### WhatsApp API:
+- https://github.com/chrishubert/whatsapp-api.git
 - Manages WhatsApp-specific tasks.
 - Communicates with the Go backend.
 
