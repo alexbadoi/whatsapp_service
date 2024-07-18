@@ -68,10 +68,10 @@ VALUES
 
 
 -- Drop table if it exists
-DROP TABLE IF EXISTS contact_master;
+DROP TABLE IF EXISTS contact_whatsapp;
 
 -- Create table if not exists
-CREATE TABLE IF NOT EXISTS contact_master (
+CREATE TABLE IF NOT EXISTS contact_whatsapp (
     contact_id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
     surname VARCHAR(255) NULL,
@@ -81,6 +81,7 @@ CREATE TABLE IF NOT EXISTS contact_master (
     co_phone_cd VARCHAR(10),
     mobile VARCHAR(20),
     email VARCHAR(255) NULL,
+    tag_id INT NULL,
     agree_contact INT DEFAULT NULL,
     agree_promo INT DEFAULT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
@@ -90,14 +91,14 @@ CREATE TABLE IF NOT EXISTS contact_master (
 );
 
 -- Load data from CSV file
-LOAD DATA INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 9.0\\Uploads\\contact_master.csv'
-INTO TABLE contact_master
+LOAD DATA INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 9.0\\Uploads\\contact_whatsapp.csv'
+INTO TABLE contact_whatsapp
 CHARACTER SET utf8mb4
 FIELDS TERMINATED BY ','
 ENCLOSED BY '"'
 LINES TERMINATED BY '\n'
 IGNORE 1 ROWS
-(contact_id, name, surname, origin_country_id, address_1, address_2, co_phone_cd, mobile, email, agree_contact, agree_promo, @created_at, @updated_at, @deleted_at, active_flg)
+(contact_id, name, surname, origin_country_id, address_1, address_2, co_phone_cd, mobile, email, tag_id, agree_contact, agree_promo, @created_at, @updated_at, @deleted_at, active_flg)
 SET
     created_at = IFNULL(NULLIF(@created_at, ''), CURRENT_TIMESTAMP),
     updated_at = IFNULL(NULLIF(@updated_at, ''), CURRENT_TIMESTAMP),

@@ -3,6 +3,7 @@
 -- Host: 127.0.0.1    Database: data_feeds
 -- ------------------------------------------------------
 -- Server version	9.0.0
+use data_feeds;
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -68,13 +69,13 @@ LOCK TABLES `agoda_data` WRITE;
 UNLOCK TABLES;
 
 --
--- Table structure for table `contact_master`
+-- Table structure for table `contact_whatsapp`
 --
 
-DROP TABLE IF EXISTS `contact_master`;
+DROP TABLE IF EXISTS `contact_whatsapp`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `contact_master` (
+CREATE TABLE `contact_whatsapp` (
   `contact_id` int NOT NULL AUTO_INCREMENT,
   `name` varchar(255) NOT NULL,
   `surname` varchar(255) DEFAULT NULL,
@@ -84,6 +85,7 @@ CREATE TABLE `contact_master` (
   `co_phone_cd` varchar(10) DEFAULT NULL,
   `mobile` varchar(20) DEFAULT NULL,
   `email` varchar(255) DEFAULT NULL,
+  `tag_id` int DEFAULT NULL,
   `agree_contact` int DEFAULT NULL,
   `agree_promo` int DEFAULT NULL,
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -95,13 +97,13 @@ CREATE TABLE `contact_master` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `contact_master`
+-- Dumping data for table `contact_whatsapp`
 --
 
-LOCK TABLES `contact_master` WRITE;
-/*!40000 ALTER TABLE `contact_master` DISABLE KEYS */;
-INSERT INTO `contact_master` VALUES (1,'Jean','Dupont',1,'123 Rue de Paris','Apt. 4','33','812345678','jean.dupont@example.com',1,1,'2024-07-18 15:49:59','2024-07-18 15:49:59',NULL,1),(2,'Marie','Curie',1,'56 Boulevard Saint-Michel','5th Floor','33','812345679','marie.curie@example.com',1,1,'2024-07-18 15:49:59','2024-07-18 15:49:59',NULL,1),(3,'Patrick','O\'Connor',2,'15 St. Stephen\'s Green','Suite 3','353','812345680','patrick.oconnor@example.com',1,1,'2024-07-18 15:49:59','2024-07-18 15:49:59',NULL,1),(4,'Siobhan','Murphy',2,'47 Merrion Square','Apt. B','353','812345681','siobhan.murphy@example.com',1,1,'2024-07-18 15:49:59','2024-07-18 15:49:59',NULL,1),(5,'John','Doe',3,'456 Nyerere Road','Kariakoo','255','812345682','john.doe@example.com',1,1,'2024-07-18 15:49:59','2024-07-18 15:49:59',NULL,1),(6,'Asha','Mwinyi',3,'123 Uhuru Street','','','','asha.mwinyi@example.com',1,1,'2024-07-18 15:49:59','2024-07-18 15:49:59',NULL,1),(7,'Kamau','Njoroge',4,'','','254','812345684','kamau.njoroge@example.com',1,1,'2024-07-18 15:49:59','2024-07-18 15:49:59',NULL,1),(8,'Wanjiku','Mwaniki',4,'234 Kenyatta Avenue','Westlands','254','812345685','wanjiku.mwaniki@example.com',1,1,'2024-07-18 15:49:59','2024-07-18 15:49:59',NULL,1),(9,'Pierre','Dupuis',1,'78 Avenue des Champs-Élysées','7th Floor','33','12345686','pierre.dupuis@example.com',1,1,'2024-07-18 15:49:59','2024-07-18 15:49:59',NULL,1),(10,'Aoife','Kelly',2,'23 Grafton Street','Apt. C','353','812345687','aoife.kelly@example.com',1,1,'2024-07-18 15:49:59','2024-07-18 15:49:59',NULL,1),(11,'Aoife','Kelly',2,'23 Grafton Street','Apt. C','353','0','aoife.kelly@example.com',1,1,'2024-07-18 15:49:59','2024-07-18 15:49:59',NULL,1),(12,'Thomas','Smith',1,'45 Rue de Rivoli','','33','812345688','thomas.smith@example.com',1,1,'2024-07-18 15:49:59','2024-07-18 15:49:59',NULL,1),(13,'Fiona','Brown',2,'10 College Green','Suite 5','353','812345689','fiona.brown@example.com',1,1,'2024-07-18 15:49:59','2024-07-18 15:49:59',NULL,1),(14,'Grace','Kawawa',3,'25 Bagamoyo Road','Upanga','255','no thanks','grace.kawawa@example.com',1,1,'2024-07-18 15:49:59','2024-07-18 15:49:59',NULL,1),(15,'James','Kabiru',4,'12 Kenyatta Avenue','Upper Hill','254','812345691','james.kabiru@example.com',1,1,'2024-07-18 15:49:59','2024-07-18 15:49:59',NULL,1),(16,'Emma','Njoroge',4,'99 Moi Avenue','Westlands','254','812345692','emma.njoroge@example.com',1,1,'2024-07-18 15:49:59','2024-07-18 15:49:59',NULL,1);
-/*!40000 ALTER TABLE `contact_master` ENABLE KEYS */;
+LOCK TABLES `contact_whatsapp` WRITE;
+/*!40000 ALTER TABLE `contact_whatsapp` DISABLE KEYS */;
+INSERT INTO `contact_whatsapp` VALUES (1,'Jean','Dupont',1,'123 Rue de Paris','Apt. 4','33','812345678','jean.dupont@example.com',1,1,1,'2024-07-18 15:58:58','2024-07-18 15:58:58',NULL,1),(2,'Marie','Curie',1,'56 Boulevard Saint-Michel','5th Floor','33','812345679','marie.curie@example.com',2,1,1,'2024-07-18 15:58:58','2024-07-18 15:58:58',NULL,1),(3,'Patrick','O\'Connor',2,'15 St. Stephen\'s Green','Suite 3','353','812345680','patrick.oconnor@example.com',3,1,1,'2024-07-18 15:58:58','2024-07-18 15:58:58',NULL,1),(4,'Siobhan','Murphy',2,'47 Merrion Square','Apt. B','353','812345681','siobhan.murphy@example.com',1,1,1,'2024-07-18 15:58:58','2024-07-18 15:58:58',NULL,1),(5,'John','Doe',3,'456 Nyerere Road','Kariakoo','255','812345682','john.doe@example.com',2,1,1,'2024-07-18 15:58:58','2024-07-18 15:58:58',NULL,1),(6,'Asha','Mwinyi',3,'123 Uhuru Street','','','','asha.mwinyi@example.com',2,1,1,'2024-07-18 15:58:58','2024-07-18 15:58:58',NULL,1),(7,'Kamau','Njoroge',4,'','','254','812345684','kamau.njoroge@example.com',2,1,1,'2024-07-18 15:58:58','2024-07-18 15:58:58',NULL,1),(8,'Wanjiku','Mwaniki',4,'234 Kenyatta Avenue','Westlands','254','812345685','wanjiku.mwaniki@example.com',2,1,1,'2024-07-18 15:58:58','2024-07-18 15:58:58',NULL,1),(9,'Pierre','Dupuis',1,'78 Avenue des Champs-?lys?s','7th Floor','33','12345686','pierre.dupuis@example.com',1,1,1,'2024-07-18 15:58:58','2024-07-18 15:58:58',NULL,1),(10,'Aoife','Kelly',2,'23 Grafton Street','Apt. C','353','812345687','aoife.kelly@example.com',4,1,1,'2024-07-18 15:58:58','2024-07-18 15:58:58',NULL,1),(11,'Aoife','Kelly',2,'23 Grafton Street','Apt. C','353','0','aoife.kelly@example.com',3,1,1,'2024-07-18 15:58:58','2024-07-18 15:58:58',NULL,1),(12,'Thomas','Smith',1,'45 Rue de Rivoli','','33','812345688','thomas.smith@example.com',2,1,1,'2024-07-18 15:58:58','2024-07-18 15:58:58',NULL,1),(13,'Fiona','Brown',2,'10 College Green','Suite 5','353','812345689','fiona.brown@example.com',1,1,1,'2024-07-18 15:58:58','2024-07-18 15:58:58',NULL,1),(14,'Grace','Kawawa',3,'25 Bagamoyo Road','Upanga','255','no thanks','grace.kawawa@example.com',1,1,1,'2024-07-18 15:58:58','2024-07-18 15:58:58',NULL,1),(15,'James','Kabiru',4,'12 Kenyatta Avenue','Upper Hill','254','812345691','james.kabiru@example.com',1,1,1,'2024-07-18 15:58:58','2024-07-18 15:58:58',NULL,1),(16,'Emma','Njoroge',4,'99 Moi Avenue','Westlands','254','812345692','emma.njoroge@example.com',1,1,1,'2024-07-18 15:58:58','2024-07-18 15:58:58',NULL,1);
+/*!40000 ALTER TABLE `contact_whatsapp` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -128,7 +130,7 @@ CREATE TABLE `tag_ref` (
 
 LOCK TABLES `tag_ref` WRITE;
 /*!40000 ALTER TABLE `tag_ref` DISABLE KEYS */;
-INSERT INTO `tag_ref` VALUES (1,'start','2024-07-18 15:49:59','2024-07-18 15:49:59',NULL,1),(2,'middle','2024-07-18 15:49:59','2024-07-18 15:49:59',NULL,1),(3,'comms','2024-07-18 15:49:59','2024-07-18 15:49:59',NULL,1),(4,'end','2024-07-18 15:49:59','2024-07-18 15:49:59',NULL,1);
+INSERT INTO `tag_ref` VALUES (1,'start','2024-07-18 15:58:58','2024-07-18 15:58:58',NULL,1),(2,'middle','2024-07-18 15:58:58','2024-07-18 15:58:58',NULL,1),(3,'comms','2024-07-18 15:58:58','2024-07-18 15:58:58',NULL,1),(4,'end','2024-07-18 15:58:58','2024-07-18 15:58:58',NULL,1);
 /*!40000 ALTER TABLE `tag_ref` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -191,7 +193,7 @@ CREATE TABLE `user_ref` (
 
 LOCK TABLES `user_ref` WRITE;
 /*!40000 ALTER TABLE `user_ref` DISABLE KEYS */;
-INSERT INTO `user_ref` VALUES (1,'Alex','Smith','alex','useralex','2024-07-18 15:49:59','2024-07-18 15:49:59',NULL,1),(2,'Gopal','Patel','gopal','usergopal','2024-07-18 15:49:59','2024-07-18 15:49:59',NULL,1),(3,'Engadev','Jones','engadev','userengadev','2024-07-18 15:49:59','2024-07-18 15:49:59',NULL,1);
+INSERT INTO `user_ref` VALUES (1,'Alex','Smith','alex','useralex','2024-07-18 15:58:58','2024-07-18 15:58:58',NULL,1),(2,'Gopal','Patel','gopal','usergopal','2024-07-18 15:58:58','2024-07-18 15:58:58',NULL,1),(3,'Engadev','Jones','engadev','userengadev','2024-07-18 15:58:58','2024-07-18 15:58:58',NULL,1);
 /*!40000 ALTER TABLE `user_ref` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -204,4 +206,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-07-18 17:50:53
+-- Dump completed on 2024-07-18 18:01:32
