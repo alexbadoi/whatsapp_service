@@ -1,6 +1,6 @@
 # Objective:
 the main ask is to implement a whatsap api service using kubernetes
-Integrate the WhatsApp Web API into a custom CRM (Safari Expert) for chat functionality and lead/sales management.
+Integrate the WhatsApp Web API into a custom react template for chat functionality and lead/sales management.
 
 ## Data Structure:
 1. you can deploy a copy of the db loclaly by running db/db_dump_file.sql
