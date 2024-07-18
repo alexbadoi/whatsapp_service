@@ -12,6 +12,16 @@ Integrate the WhatsApp Web API into a custom CRM (Safari Expert) for chat functi
 7. be able to add a contact from chat app via + button this should populate contact_ref
 
 
+### Suggested Architecture
+All requests from the frontend to the WhatsApp API will go through the Go backend. Here’s the flow:
+
+#### Flow of Requests
+1. **Frontend:** Sends a request to the Go backend.
+2. **Go Backend:** Processes the request and, if needed, forwards it to the WhatsApp API.
+3. **WhatsApp API:** Handles WhatsApp-specific tasks (e.g., sending messages) and returns the response to the Go backend.
+4. **Go Backend:** Processes the WhatsApp API response and sends the final response back to the frontend.
+
+
 ## Stack:
 - Golang + Fiber
 - ReactJS
@@ -64,18 +74,10 @@ Integrate the WhatsApp Web API into a custom CRM (Safari Expert) for chat functi
 2. Apply configurations using `kubectl apply -f <file.yaml>`.
 3. Access services via NodePort.
 
-### Suggested Architecture
-All requests from the frontend to the WhatsApp API will go through the Go backend. Here’s the flow:
 
-#### Flow of Requests
-1. **Frontend:** Sends a request to the Go backend.
-2. **Go Backend:** Processes the request and, if needed, forwards it to the WhatsApp API.
-3. **WhatsApp API:** Handles WhatsApp-specific tasks (e.g., sending messages) and returns the response to the Go backend.
-4. **Go Backend:** Processes the WhatsApp API response and sends the final response back to the frontend.
+## Kubernetes Configuration
 
-### Kubernetes Configuration
-
-#### services.yaml
+### services.yaml
 ```yaml
 apiVersion: v1
 kind: Service
@@ -121,7 +123,7 @@ spec:
   type: NodePort
 ```
 
-#### backend-deployment.yaml
+### backend-deployment.yaml
 ```yaml
 apiVersion: apps/v1
 kind: Deployment
@@ -153,7 +155,7 @@ spec:
           value: "safari_expert"
 ```
 
-#### frontend-deployment.yaml
+### frontend-deployment.yaml
 ```yaml
 apiVersion: apps/v1
 kind: Deployment
@@ -176,7 +178,7 @@ spec:
         - containerPort: 3000
 ```
 
-#### whatsapp-api-deployment.yaml
+### whatsapp-api-deployment.yaml
 ```yaml
 apiVersion: apps/v1
 kind: Deployment
