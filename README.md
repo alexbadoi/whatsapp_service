@@ -17,6 +17,9 @@ Integrate the WhatsApp Web API into a custom CRM (Safari Expert) for chat functi
 - Modify the chat box for better screen fit.
 - Add a favorites section to pin contacts.
 - Enhance the contact card to integrate user-specific information and tags from the database.
+- **Admin Screen:** Create a page where a user can request a QR code and register their WhatsApp. This page will handle the output from the WhatsApp service for QR code registration.
+- **Chat App:** Develop a chat application for users to communicate. Ensure it can handle 3-4 concurrent users.
+
 
 ## Deployment:
 - Deploy using Kubernetes.
