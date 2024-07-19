@@ -7,7 +7,7 @@ The main ask is to implement a whatsap api service using kubernetes
 Integrate the WhatsApp Web API into a custom react template for chat functionality for hotel sales management.
 
 #### Flow of Requests
-1.Initially theres only 2 pods running - main-backend and main-frontend. 
+1. Initially theres only 2 pods running - main-backend and main-frontend. 
 2. User logs in and nagivates to admin page (first page that needs to be built) to and pushes button to subscribe to API
 4. Go backend deploys another kubernetes pod containing whatsapp web instance
 5. The WhatsapQR code is returned to use and he registers his whatsapp web to the pod.
