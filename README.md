@@ -3,22 +3,85 @@
 For any questions, feel free to reach out on Discord: ![Discord](https://img.shields.io/badge/Discord-ak308465-7289DA)
 
 # Objective:
-The main ask is to implement a whatsap api service using kubernetes
-Integrate the WhatsApp Web API into a custom react template for chat functionality for hotel sales management.
+The main ask is to implement a whatsap api service using docker
+Integrate the WhatsApp Web API into the LizAnt UI react template given.
 
-#### Flow of Requests
-1. There are 2 pods running - main-backend and main-frontend. 
-2. User logs in and nagivates to admin page (first page that needs to be built) to and pushes button to subscribe to API
-3. Go backend deploys another kubernetes pod containing whatsapp web instance
-4. The WhatsapQR code is returned to use and he registers his whatsapp web to the pod.
-5. All chat and contact data is pulled in by go backend and stored to database. the db is shared amongst users
-6. Go backend joins the contact numbers of all active chats against database to identify matches
-7. The user nagigates to the chat page
-8. All chat data for all contacts is returned to the react Ui
-9. **Frontend:** Sends a chat message i.e. request to the Go backend.
-10. **Go Backend:** Processes the chat request and, if needed, forwards it to the WhatsApp API.
-11. **WhatsApp API:** Handles WhatsApp-specific tasks (e.g., sending messages) and returns the response to the Go backend.
-12. **Go Backend:** Processes the WhatsApp API response and sends the final response back to the frontend.
+# To get started:
+
+WuzAPI is an implementation of @tulir/whatsmeow library as a simple RESTful API service with multiple device support and concurrent sessions.
+Clone the Wuzapi repository:
+```
+cd whatsapp_service
+git pull https://github.com/asternic/wuzapi.git
+```
+
+update the Docker file with:
+
+```
+FROM golang:1.21-alpine AS build
+RUN apk add --no-cache gcc musl-dev sqlite
+RUN mkdir /app
+COPY . /app
+WORKDIR /app
+RUN go mod tidy
+ENV CGO_ENABLED=1
+RUN go build -o server .
+
+FROM alpine:latest
+RUN apk add --no-cache sqlite
+RUN mkdir /app
+COPY ./static /app/static
+COPY --from=build /app/server /app/
+VOLUME [ "/app/dbdata", "/app/files" ]
+WORKDIR /app
+ENV WUZAPI_ADMIN_TOKEN SetToRandomAndSecureTokenForAdminTasks
+CMD [ "/app/server", "-logtype", "json" ]
+
+```
+
+create docker-compose.yml
+```
+version: '3.8'
+
+services:
+  wuzapi:
+    build: .
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./dbdata:/app/dbdata
+      - ./files:/app/files
+    environment:
+      - WUZAPI_ADMIN_TOKEN=YourSecureAdminToken
+
+```
+check users inside the container: 
+```
+docker exec -it docker_container_id  sh
+sqlite3 dbdata/users.db "select * from users"
+```
+
+
+add user inside the container sql:
+```
+docker exec -it docker_container_id  sh
+cd /app/dbdata
+sqlite3 users.db "insert into users (name, token) values ('John', '1234ABCD')"
+```
+
+# Scenario:
+
+There is an organisation with multiple users using the react web-app.
+
+1. **Register WhatsApp web** - The user must log and receive QR code to register whats-app web
+2. **De-Register WhatsApp web** - The user must be able to de-register whats-app web
+3. **Cat Load and Contact Merge** - Whatsapp web api i called to retreive all contacts and hostorical chats. there is a pre-existing contacts table available in mysql. the engine must join the data sets by phone numbers and identify matches.
+4. **Multiple Users** Multiple users use the same whatsapp back-end and are able to use the chat functionality offered by wazapi
+5. **Decoupled backends**  We have the main-backend in go which powers the react UI. the whatsapp API service must include the wazapi package and containerised independently of the main-backend which is present here in this repo.
+  - **Frontend:** Sends a chat message i.e. request to the Go backend.
+  - **Go Backend:** Processes the chat request and, if needed, forwards it to the WhatsApp API.
+  - **WhatsApp API:** Handles WhatsApp-specific tasks (e.g., sending messages) and returns the response to the Go backend.
+  - **Go Backend:** Processes the WhatsApp API response and sends the final response back to the frontend.
 
 
 ## Credentials:
