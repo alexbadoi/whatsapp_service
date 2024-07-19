@@ -1,30 +1,32 @@
+
+# WhatsApp Service
+
 ## Contact
 
 For any questions, feel free to reach out on Discord: ![Discord](https://img.shields.io/badge/Discord-ak308465-7289DA)
 
-# Objective:
-The main ask is to implement a whatsap api service using docker
-Integrate the WhatsApp Web API into the LizAnt UI react template given.
+## Objective
 
-## Deliverable:
-A docker-compose configuration to deploy 4 containers includeing:
+The main task is to implement a WhatsApp API service using Docker and integrate the WhatsApp Web API into the LizAnt UI React template provided.
+
+## Deliverables
+
+A Docker-compose configuration to deploy 4 containers including:
 - React Frontend supporting the React template
 - Go main-backend
-- Postgresql database
-- Qazapi api
+- PostgreSQL database
+- WuzAPI chat service
 
-# To get started:
+## Getting Started
 
-WuzAPI is an implementation of @tulir/whatsmeow library as a simple RESTful API service with multiple device support and concurrent sessions.
-Clone the Wuzapi repository:
-```
+WuzAPI is an implementation of [@tulir/whatsmeow](https://github.com/tulir/whatsmeow) library as a simple RESTful API service with multiple device support and concurrent sessions. Clone the WuzAPI repository:
+```bash
 cd whatsapp_service
 git pull https://github.com/asternic/wuzapi.git
 ```
 
-update the Docker file with:
-
-```
+Update the Docker file with:
+```dockerfile
 FROM golang:1.21-alpine AS build
 RUN apk add --no-cache gcc musl-dev sqlite
 RUN mkdir /app
@@ -41,60 +43,106 @@ COPY ./static /app/static
 COPY --from=build /app/server /app/
 VOLUME [ "/app/dbdata", "/app/files" ]
 WORKDIR /app
-ENV WUZAPI_ADMIN_TOKEN SetToRandomAndSecureTokenForAdminTasks
+ENV WUZAPI_ADMIN_TOKEN=YourSecureAdminTokenForAdminTasks
 CMD [ "/app/server", "-logtype", "json" ]
-
 ```
 
-create docker-compose.yml
-```
+Create a `docker-compose.yml`:
+```yaml
 version: '3.8'
 
 services:
-  wuzapi:
-    build: .
+  frontend:
+    build: ./frontend
+    ports:
+      - "3000:3000"
+    networks:
+      - app-network
+
+  backend:
+    build: ./backend
     ports:
       - "8080:8080"
-    volumes:
-      - ./dbdata:/app/dbdata
-      - ./files:/app/files
+    networks:
+      - app-network
+    depends_on:
+      - database
+      - chat-service
+
+  chat-service:
+    image: asternic/wuzapi:latest
+    ports:
+      - "8081:8080"
     environment:
       - WUZAPI_ADMIN_TOKEN=YourSecureAdminToken
+    networks:
+      - app-network
 
+  database:
+    image: postgres:latest
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: chat_db
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  db_data:
 ```
-check users inside the container: 
-```
-docker exec -it docker_container_id  sh
-sqlite3 dbdata/users.db "select * from users"
-```
 
+## Architecture Description
 
-add user inside the container sql:
-```
-docker exec -it docker_container_id  sh
-cd /app/dbdata
-sqlite3 users.db "insert into users (name, token) values ('John', '1234ABCD')"
-```
+The application architecture is designed to be modular and scalable, leveraging microservices and containerization. Here is a detailed description of each component:
 
-# Scenario:
+### Proposed Architecture Components
 
-There is an organisation with multiple users using the react web-app.
+1. **Frontend (React)**:
+    - Handles user interactions and displays chat messages.
+    - Communicates with the backend services via REST API or WebSockets.
 
-1. **Register WhatsApp web** - The user must log and receive QR code to register whats-app web
-2. **De-Register WhatsApp web** - The user must be able to de-register whats-app web
-3. **Cat Load and Contact Merge** - Whatsapp web api i called to retreive all contacts and hostorical chats. there is a pre-existing contacts table available in mysql. the engine must join the data sets by phone numbers and identify matches.
-4. **Multiple Users** - Multiple users use the same whatsapp back-end and are able to use the chat functionality offered by wazapi
-5. **Decoupled backends** - We have the main-backend in go which powers the react UI. the whatsapp API service must include the wazapi package and containerised independently of the main-backend which is present here in this repo. All requests from the frontend to the wazapi API should go through the Go main-backend. Here’s the flow:
-- 
-  - 
-    - **React Frontend:** Sends a chat message i.e. request to the Go main-backend.
-    - **Go Backend:** Processes the chat request and, if needed, forwards it to the WhatsApp API.
-    - **WhatsApp API:** Handles WhatsApp-specific tasks (e.g., sending messages) and returns the response to the Go backend.
-    - **Go Backend:** Processes the WhatsApp API response and sends the final response back to the frontend.
-6. **Postgres DB** By default wazapi is configured to use sqlite but this is an implementation of @tulir/whatsmeow library which also suports PostgreSQL. A separate container running PostgreSQL must be deployed to dupport any CRUD operations from wazapi.
+2. **Backend (Go)**:
+    - Manages user sessions, authentication, and other core functionalities.
+    - Handles communication with the chat service.
+  
+3. **Chat Service (WuzAPI)**:
+    - Manages chat functionality, including message storage, retrieval, and real-time updates.
+    - Integrates with the existing Go backend for user authentication.
 
+4. **Database (PostgreSQL or MySQL)**:
+    - Stores user data, chat messages, and other related information.
+  
+5. **API Gateway**:
+    - Manages and routes requests to the appropriate services.
 
-## mysql schema credentials with data example:
+6. **Docker Compose**:
+    - Manages multi-container Docker applications.
+
+### Detailed Flow
+
+1. **React Frontend**: Sends a chat message request to the Go main-backend.
+2. **Go Backend**: Processes the chat request and, if needed, forwards it to the WhatsApp API.
+3. **WhatsApp API**: Handles WhatsApp-specific tasks (e.g., sending messages) and returns the response to the Go backend.
+4. **Go Backend**: Processes the WhatsApp API response and sends the final response back to the frontend.
+
+## Scenario
+
+There is an organization with multiple users using the React web-app.
+
+1. **Register WhatsApp web** - The user must log in and receive a QR code to register WhatsApp web.
+2. **De-Register WhatsApp web** - The user must be able to de-register WhatsApp web.
+3. **Cat Load and Contact Merge** - WhatsApp web API is called to retrieve all contacts and historical chats. There is a pre-existing contacts table available in MySQL. The engine must join the data sets by phone numbers and identify matches.
+4. **Multiple Users** - Multiple users use the same WhatsApp backend and are able to use the chat functionality offered by WuzAPI.
+5. **Decoupled Backends** - We have the main-backend in Go which powers the React UI. The WhatsApp API service must include the WuzAPI package and be containerized independently of the main-backend. All requests from the frontend to the WuzAPI API should go through the Go main-backend.
+6. **Postgres DB** - By default, WuzAPI is configured to use SQLite, but this implementation of [@tulir/whatsmeow](https://github.com/tulir/whatsmeow) library also supports PostgreSQL. A separate container running PostgreSQL must be deployed to support any CRUD operations from WuzAPI.
+
+## MySQL Schema Credentials with Data Example
 
 You can check some dummy data and data model using the credentials here:
 
@@ -105,31 +153,35 @@ You can check some dummy data and data model using the credentials here:
   - Schema: `data_feeds`
   - Use/insert credentials from the table: `user_ref` for login screen
 
+## Notes on the Data
 
-## Noted on the data:
-1. you can deploy a copy of the db loclaly by running db/db_dump_file.sql
-2. once the cat app is connected via qr code it should automaticlaly pull in and populate contact_whatsapp table with all available contacts from whstapp
-3. table tag_ref includes available tags which should be fed into the contact card - see Enhance the contact requirements in the frontend section.
-4. there is a tag_id field in contact ref this should be displayed on teh contact card in the chat app. 
-5. all chat data should be stored
-6. there are 3 available users in user_ref and they provide the login credential information for the web app
-7. be able to add a contact from chat app via + button this should populate contact_ref
+1. You can deploy a copy of the database locally by running `db/db_dump_file.sql`.
+2. Once the cat app is connected via QR code, it should automatically pull in and populate the `contact_whatsapp` table with all available contacts from WhatsApp.
+3. The table `tag_ref` includes available tags which should be fed into the contact card - see Enhance the contact requirements in the frontend section.
+4. There is a `tag_id` field in `contact_ref` which should be displayed on the contact card in the chat app.
+5. All chat data should be stored.
+6. There are 3 available users in `user_ref` and they provide the login credential information for the web app.
+7. Be able to add a contact from the chat app via the + button; this should populate `contact_ref`.
 
-## Stack:
+## Stack
+
 - Golang + Fiber
 - ReactJS
 
- 
-## Backend:
+## Backend
+
 - Use Golang with Fiber and GORM frameworks.
 
-## Frontend:
-- Use the Lizant Ant Design React Admin Dashboard template. this is already in a functioning state deployed with go backend. it currently only does some hotel search to rapid API the rest of the template still inside.
+## Frontend
+
+- Use the LizAnt Ant Design React Admin Dashboard template. This is already in a functioning state deployed with the Go backend. It currently only does some hotel search to Rapid API, the rest of the template is still inside.
 - Modify the chat box for better screen fit.
 - Add a favorites section to pin contacts.
 - Enhance the contact card to integrate user-specific information and tags from the database.
-- **Admin Screen:** Create a page where a user can request a QR code and register their WhatsApp. This page will handle the output from the WhatsApp service for QR code registration.- **Chat App:** Develop a chat application for users to communicate. Ensure it can handle 3-4 concurrent users.
+- **Admin Screen:** Create a page where a user can request a QR code and register their WhatsApp. This page will handle the output from the WhatsApp service for QR code registration.
+- **Chat App:** Develop a chat application for users to communicate. Ensure it can handle 3-4 concurrent users.
 
-## Deployment:
-- Deploy using docker-compose.
+## Deployment
+
+- Deploy using Docker Compose.
 - Ensure the app handles 3-10 concurrent users with unique phone numbers for testing.
