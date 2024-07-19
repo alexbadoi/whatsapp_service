@@ -77,8 +77,8 @@ There is an organisation with multiple users using the react web-app.
 2. **De-Register WhatsApp web** - The user must be able to de-register whats-app web
 3. **Cat Load and Contact Merge** - Whatsapp web api i called to retreive all contacts and hostorical chats. there is a pre-existing contacts table available in mysql. the engine must join the data sets by phone numbers and identify matches.
 4. **Multiple Users** Multiple users use the same whatsapp back-end and are able to use the chat functionality offered by wazapi
-5. **Decoupled backends**  We have the main-backend in go which powers the react UI. the whatsapp API service must include the wazapi package and containerised independently of the main-backend which is present here in this repo.
-- All requests from the frontend to the WhatsApp API will go through the Go backend. Here’s the flow:
+5. **Decoupled backends**  We have the main-backend in go which powers the react UI. the whatsapp API service must include the wazapi package and containerised independently of the main-backend which is present here in this repo. All requests from the frontend to the wazapi API should go through the Go main-backend. Here’s the flow:
+- 
   - 
     - **React Frontend:** Sends a chat message i.e. request to the Go main-backend.
     - **Go Backend:** Processes the chat request and, if needed, forwards it to the WhatsApp API.
