@@ -89,6 +89,7 @@ services:
     - app-network
   ports:
     - "5432:5432"
+
 networks:
   app-network:
     driver: bridge
