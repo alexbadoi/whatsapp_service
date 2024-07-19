@@ -78,17 +78,17 @@ services:
     networks:
       - app-network
 
-  database:
-    image: postgres:latest
-    environment:
-      POSTGRES_USER: user
-      POSTGRES_PASSWORD: password
-      POSTGRES_DB: chat_db
-    volumes:
-      - db_data:/var/lib/postgresql/data
-    networks:
-      - app-network
-
+  image: postgres:latest
+  environment:
+    POSTGRES_USER: user
+    POSTGRES_PASSWORD: password
+    POSTGRES_DB: chat_db
+  volumes:
+    - db_data:/var/lib/postgresql/data
+  networks:
+    - app-network
+  ports:
+    - "5432:5432"
 networks:
   app-network:
     driver: bridge
