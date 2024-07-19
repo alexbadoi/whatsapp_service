@@ -78,15 +78,23 @@ There is an organisation with multiple users using the react web-app.
 3. **Cat Load and Contact Merge** - Whatsapp web api i called to retreive all contacts and hostorical chats. there is a pre-existing contacts table available in mysql. the engine must join the data sets by phone numbers and identify matches.
 4. **Multiple Users** Multiple users use the same whatsapp back-end and are able to use the chat functionality offered by wazapi
 5. **Decoupled backends**  We have the main-backend in go which powers the react UI. the whatsapp API service must include the wazapi package and containerised independently of the main-backend which is present here in this repo.
-- 
+- All requests from the frontend to the WhatsApp API will go through the Go backend. Here’s the flow:
   - 
-    - **Frontend:** Sends a chat message i.e. request to the Go backend.
+    - **React Frontend:** Sends a chat message i.e. request to the Go main-backend.
     - **Go Backend:** Processes the chat request and, if needed, forwards it to the WhatsApp API.
     - **WhatsApp API:** Handles WhatsApp-specific tasks (e.g., sending messages) and returns the response to the Go backend.
     - **Go Backend:** Processes the WhatsApp API response and sends the final response back to the frontend.
+6. **Postgres DB** By default wazapi is configured to use sqlite but this is an implementation of @tulir/whatsmeow library which also suports PostgreSQL. A separate container running PostgreSQL must be deployed to dupport any CRUD operations from wazapi.
 
+## Deliverable:
 
-## Credentials:
+A docker-compose configuration to deploy 4 containers includeing:
+- React Frontend supporting the React template
+- go main-backend
+- Postgresql database
+- wazapi api
+
+## mysql schema credentials with data example:
 
 You can check some dummy data and data model using the credentials here:
 
@@ -107,20 +115,13 @@ You can check some dummy data and data model using the credentials here:
 6. there are 3 available users in user_ref and they provide the login credential information for the web app
 7. be able to add a contact from chat app via + button this should populate contact_ref
 
-
-### Suggested Architecture
-All requests from the frontend to the WhatsApp API will go through the Go backend. Here’s the flow:
-
-
 ## Stack:
 - Golang + Fiber
 - ReactJS
-- 
-- 
+
+ 
 ## Backend:
 - Use Golang with Fiber and GORM frameworks.
-- Implement endpoints for user login, QR code registration, and full chat functionality.
-- Connect to an external MySQL database.
 
 ## Frontend:
 - Use the Lizant Ant Design React Admin Dashboard template. this is already in a functioning state deployed with go backend. it currently only does some hotel search to rapid API the rest of the template still inside.
@@ -130,178 +131,5 @@ All requests from the frontend to the WhatsApp API will go through the Go backen
 - **Admin Screen:** Create a page where a user can request a QR code and register their WhatsApp. This page will handle the output from the WhatsApp service for QR code registration.- **Chat App:** Develop a chat application for users to communicate. Ensure it can handle 3-4 concurrent users.
 
 ## Deployment:
-- Deploy using Kubernetes.
+- Deploy using docker-compose.
 - Ensure the app handles 3-10 concurrent users with unique phone numbers for testing.
-
-### Kubernetes Configuration
-
-#### Deployments:
-- backend-deployment.yaml
-- frontend-deployment.yaml
-- whatsapp-api-deployment.yaml
-
-#### Services:
-- services.yaml
-
-### Deployment Steps
-1. Create Deployment and Service YAML files.
-2. Apply configurations using `kubectl apply -f <file.yaml>`.
-3. Access services via NodePort.
-
-
-## Kubernetes Configuration
-
-### services.yaml
-```yaml
-apiVersion: v1
-kind: Service
-metadata:
-  name: backend
-spec:
-  selector:
-    app: backend
-  ports:
-    - protocol: TCP
-      port: 8080
-      targetPort: 8080
-  type: NodePort
-
----
-
-apiVersion: v1
-kind: Service
-metadata:
-  name: frontend
-spec:
-  selector:
-    app: frontend
-  ports:
-    - protocol: TCP
-      port: 3000
-      targetPort: 3000
-  type: NodePort
-
----
-
-apiVersion: v1
-kind: Service
-metadata:
-  name: whatsapp-api
-spec:
-  selector:
-    app: whatsapp-api
-  ports:
-    - protocol: TCP
-      port: 3001
-      targetPort: 3000
-  type: NodePort
-```
-
-### backend-deployment.yaml
-```yaml
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: backend
-spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: backend
-  template:
-    metadata:
-      labels:
-        app: backend
-    spec:
-      containers:
-      - name: backend
-        image: your-backend-image
-        ports:
-        - containerPort: 8080
-        env:
-        - name: DB_HOST
-          value: "your_external_db_host"
-        - name: DB_USER
-          value: "root"
-        - name: DB_PASSWORD
-          value: "yourpassword"
-        - name: DB_NAME
-          value: "safari_expert"
-```
-
-### frontend-deployment.yaml
-```yaml
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: frontend
-spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: frontend
-  template:
-    metadata:
-      labels:
-        app: frontend
-    spec:
-      containers:
-      - name: frontend
-        image: your-frontend-image
-        ports:
-        - containerPort: 3000
-```
-
-### whatsapp-api-deployment.yaml
-```yaml
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: whatsapp-api
-spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: whatsapp-api
-  template:
-    metadata:
-      labels:
-        app: whatsapp-api
-    spec:
-      containers:
-      - name: whatsapp-api
-        image: your-whatsapp-api-image
-        ports:
-        - containerPort: 3000
-        env:
-        - name: BASE_WEBHOOK_URL
-          value: http://backend:8080/webhook
-        - name: ENABLE_SWAGGER_ENDPOINT
-          value: "true"
-        - name: API_KEY
-          value: "your_api_key"
-        volumeMounts:
-        - name: session-volume
-          mountPath: /app/session
-      volumes:
-      - name: session-volume
-        hostPath:
-          path: /path/to/your/session
-```
-
-### Summary
-- **Frontend:** Sends requests to the backend via the NodePort service on port 3000.
-- **Backend:** Handles requests, forwards to WhatsApp API if needed, and returns responses to the frontend. Exposed via NodePort on port 8080.
-- **WhatsApp API:** Handles WhatsApp-specific tasks and communicates with the backend. Exposed via NodePort on port 3001.
-
-This setup maintains clear communication paths and allows each service to operate independently while ensuring they can interact as needed.
-
-Ensure you have `kubectl` configured to interact with your Kubernetes cluster. Then apply the configuration files:
-```sh
-kubectl apply -f backend-deployment.yaml
-kubectl apply -f frontend-deployment.yaml
-kubectl apply -f whatsapp-api-deployment.yaml
-kubectl apply -f services.yaml
-```
-
-This setup allows you to deploy your applications to Kubernetes in a manner similar to using docker-compose, providing a straightforward way to manage your services and scale them as needed.
