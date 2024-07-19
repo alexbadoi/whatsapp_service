@@ -11,7 +11,7 @@ The main task is to implement a WhatsApp API service using Docker and integrate 
 
 ## Deliverables
 
-A Docker-compose configuration to deploy 4 containers including:
+A Docker-compose configuration to deploy 4 services including:
 - React Frontend supporting the React template
 - Go main-backend
 - PostgreSQL database
