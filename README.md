@@ -16,8 +16,15 @@ Integrate the WhatsApp Web API into a custom react template for chat functionali
 All requests from the frontend to the WhatsApp API will go through the Go backend. Here’s the flow:
 
 #### Flow of Requests
-1. **Frontend:** Sends a request to the Go backend.
-2. **Go Backend:** Processes the request and, if needed, forwards it to the WhatsApp API.
+1. User logs in and nagivates to admin page to and pushes button to subscribe to API
+2. Go backend deploys another kubernetes pod containing whatsapp web instance
+3. The WhatsapQR code is returned to use and he registers his whatsapp web to the pod.
+5. All chat and contact data is pulled in by go backend and stored to database.
+6. Go backend joins the contact numbers of all active chats against database to identify matches
+7. The user nagigates to the chat page
+8. All chat data for all contacts is returned to the react Ui
+1. **Frontend:** Sends a chat message i.e. request to the Go backend.
+2. **Go Backend:** Processes the chat request and, if needed, forwards it to the WhatsApp API.
 3. **WhatsApp API:** Handles WhatsApp-specific tasks (e.g., sending messages) and returns the response to the Go backend.
 4. **Go Backend:** Processes the WhatsApp API response and sends the final response back to the frontend.
 
@@ -33,7 +40,7 @@ All requests from the frontend to the WhatsApp API will go through the Go backen
 - Connect to an external MySQL database.
 
 ## Frontend:
-- Use the Lizant Ant Design React Admin Dashboard template.
+- Use the Lizant Ant Design React Admin Dashboard template. this is already in a functioning state deployed with go backend. it currently only does some hotel search to rapid API the rest of the template still inside.
 - Modify the chat box for better screen fit.
 - Add a favorites section to pin contacts.
 - Enhance the contact card to integrate user-specific information and tags from the database.
