@@ -1,8 +1,39 @@
+## Contact
+
+For any questions, feel free to reach out on Discord: ![Discord](https://img.shields.io/badge/Discord-ak308465-7289DA)
+
 # Objective:
-the main ask is to implement a whatsap api service using kubernetes
+The main ask is to implement a whatsap api service using kubernetes
 Integrate the WhatsApp Web API into a custom react template for chat functionality for hotel sales management.
 
-## Data Structure:
+#### Flow of Requests
+1.Initially theres only 2 pods running - main-backend and main-frontend. 
+2. User logs in and nagivates to admin page (first page that needs to be built) to and pushes button to subscribe to API
+4. Go backend deploys another kubernetes pod containing whatsapp web instance
+5. The WhatsapQR code is returned to use and he registers his whatsapp web to the pod.
+6. All chat and contact data is pulled in by go backend and stored to database.
+7. Go backend joins the contact numbers of all active chats against database to identify matches
+8. The user nagigates to the chat page
+9. All chat data for all contacts is returned to the react Ui
+1. **Frontend:** Sends a chat message i.e. request to the Go backend.
+2. **Go Backend:** Processes the chat request and, if needed, forwards it to the WhatsApp API.
+3. **WhatsApp API:** Handles WhatsApp-specific tasks (e.g., sending messages) and returns the response to the Go backend.
+4. **Go Backend:** Processes the WhatsApp API response and sends the final response back to the frontend.
+
+
+## Credentials:
+
+You can check some dummy data and data model using the credentials here:
+
+- **MySQL Database:**
+  - User: `engadev`
+  - Password: `userengadev`
+  - Host: `45.8.149.43:3306`
+  - Schema: `data_feeds`
+  - Use/insert credentials from the table: `user_ref` for login screen
+
+
+## Noted on the data:
 1. you can deploy a copy of the db loclaly by running db/db_dump_file.sql
 2. once the cat app is connected via qr code it should automaticlaly pull in and populate contact_whatsapp table with all available contacts from whstapp
 3. table tag_ref includes available tags which should be fed into the contact card - see Enhance the contact requirements in the frontend section.
@@ -14,19 +45,6 @@ Integrate the WhatsApp Web API into a custom react template for chat functionali
 
 ### Suggested Architecture
 All requests from the frontend to the WhatsApp API will go through the Go backend. Here’s the flow:
-
-#### Flow of Requests
-1. User logs in and nagivates to admin page to and pushes button to subscribe to API
-2. Go backend deploys another kubernetes pod containing whatsapp web instance
-3. The WhatsapQR code is returned to use and he registers his whatsapp web to the pod.
-5. All chat and contact data is pulled in by go backend and stored to database.
-6. Go backend joins the contact numbers of all active chats against database to identify matches
-7. The user nagigates to the chat page
-8. All chat data for all contacts is returned to the react Ui
-1. **Frontend:** Sends a chat message i.e. request to the Go backend.
-2. **Go Backend:** Processes the chat request and, if needed, forwards it to the WhatsApp API.
-3. **WhatsApp API:** Handles WhatsApp-specific tasks (e.g., sending messages) and returns the response to the Go backend.
-4. **Go Backend:** Processes the WhatsApp API response and sends the final response back to the frontend.
 
 
 ## Stack:
@@ -222,14 +240,3 @@ kubectl apply -f services.yaml
 ```
 
 This setup allows you to deploy your applications to Kubernetes in a manner similar to using docker-compose, providing a straightforward way to manage your services and scale them as needed.
-
-## Credentials:
-- **MySQL Database:**
-  - User: `engadev`
-  - Password: `userengadev`
-  - Host: `45.8.149.43:3306`
-  - Schema: `data_feeds`
-  - Use/insert credentials from the table: `user_ref` for login screen
-
-## Contact
-For any questions, feel free to reach out on Discord: ![Discord](https://img.shields.io/badge/Discord-ak308465-7289DA)
