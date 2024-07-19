@@ -7,18 +7,18 @@ The main ask is to implement a whatsap api service using kubernetes
 Integrate the WhatsApp Web API into a custom react template for chat functionality for hotel sales management.
 
 #### Flow of Requests
-1. Initially theres only 2 pods running - main-backend and main-frontend. 
+1. There are 2 pods running - main-backend and main-frontend. 
 2. User logs in and nagivates to admin page (first page that needs to be built) to and pushes button to subscribe to API
-4. Go backend deploys another kubernetes pod containing whatsapp web instance
-5. The WhatsapQR code is returned to use and he registers his whatsapp web to the pod.
-6. All chat and contact data is pulled in by go backend and stored to database.
-7. Go backend joins the contact numbers of all active chats against database to identify matches
-8. The user nagigates to the chat page
-9. All chat data for all contacts is returned to the react Ui
-1. **Frontend:** Sends a chat message i.e. request to the Go backend.
-2. **Go Backend:** Processes the chat request and, if needed, forwards it to the WhatsApp API.
-3. **WhatsApp API:** Handles WhatsApp-specific tasks (e.g., sending messages) and returns the response to the Go backend.
-4. **Go Backend:** Processes the WhatsApp API response and sends the final response back to the frontend.
+3. Go backend deploys another kubernetes pod containing whatsapp web instance
+4. The WhatsapQR code is returned to use and he registers his whatsapp web to the pod.
+5. All chat and contact data is pulled in by go backend and stored to database. the db is shared amongst users
+6. Go backend joins the contact numbers of all active chats against database to identify matches
+7. The user nagigates to the chat page
+8. All chat data for all contacts is returned to the react Ui
+9. **Frontend:** Sends a chat message i.e. request to the Go backend.
+10. **Go Backend:** Processes the chat request and, if needed, forwards it to the WhatsApp API.
+11. **WhatsApp API:** Handles WhatsApp-specific tasks (e.g., sending messages) and returns the response to the Go backend.
+12. **Go Backend:** Processes the WhatsApp API response and sends the final response back to the frontend.
 
 
 ## Credentials:
