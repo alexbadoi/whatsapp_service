@@ -119,8 +119,9 @@ The application architecture is designed to be modular and scalable, leveraging 
 4. **Database (PostgreSQL or MySQL)**:
     - Stores user data, chat messages, and other related information.
   
-5. **API Gateway**:
+5. **Controller**:
     - Manages and routes requests to the appropriate services.
+    - https://hub.docker.com/_/traefik
 
 6. **Docker Compose**:
     - Manages multi-container Docker applications.
