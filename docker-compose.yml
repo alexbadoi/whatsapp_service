@@ -1,0 +1,12 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    environment:
+      - DB_DSN=gopal:usergopal@tcp(45.8.149.43:3306)/data_feeds
+      - RAPIDAPI_KEY=7c7b4967famsh928a7f5ffc2bf1bp1e34dejsn2d6a28159d5b

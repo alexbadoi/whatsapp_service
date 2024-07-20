@@ -15,7 +15,7 @@ const HotelSearch = ({ setHotels }) => {
   const [dates, setDates] = useState([]);
   const [errors, setErrors] = useState({});
   const [options, setOptions] = useState([]);
-  const [selectedLocation, setSelectedLocation] = useState(1_318);
+  const [selectedLocation, setSelectedLocation] = useState(null);
   const [filters, setFilters] = useState({
     starRating: [],
     guestRating: [],
@@ -97,7 +97,7 @@ const HotelSearch = ({ setHotels }) => {
       const data = await fetchHotelData(selectedLocation, from, to, guests.adults, childrenAges, guests.rooms, filters);
 
       if (data != null) {
-        setHotels(data, guests, [from, to], childrenAges);
+        setHotels(data, guests, [from, to], childrenAges, {id: selectedLocation, name: location});
         return;
       }
     }
@@ -191,7 +191,7 @@ const HotelSearch = ({ setHotels }) => {
       <Flex justify='space-between'>
         <AutoComplete
           options={options}
-          style={{ width: '35%' }}
+          style={{ width: '25%', margin: '0 1rem' }}
           value={location}
           onChange={handleLocationChange}
           onSelect={handleLocationSelect}
@@ -203,10 +203,10 @@ const HotelSearch = ({ setHotels }) => {
           />
         </AutoComplete>
         <RangePicker
-          style={{ width: '35%' }}
           value={dates}
           onChange={setDates}
           status={errors.dates ? 'error' : ''}
+          style={{ margin: '0 1rem' }}
         />
         <div style={{ position: 'relative' }}>
           <Button
@@ -256,15 +256,15 @@ const HotelSearch = ({ setHotels }) => {
             </div>
           )}
         </div>
-      </Flex>
-      <Dropdown overlay={filterMenu} trigger={['click']}>
-        <Button style={{ width: '100%', marginTop: '20px', marginBottom: '20px' }}>
-          Filters <DownOutlined />
+        <Dropdown overlay={filterMenu} trigger={['click']}>
+          <Button style={{ width: 100, margin: '0 1rem' }}>
+            Filters <DownOutlined />
+          </Button>
+        </Dropdown>
+        <Button type="primary" icon={<SearchOutlined />} onClick={handleSearch}>
+          SEARCH
         </Button>
-      </Dropdown>
-      <Button type="primary" icon={<SearchOutlined />} style={{ width: '100%', marginTop: '20px' }} onClick={handleSearch}>
-        SEARCH
-      </Button>
+      </Flex>
     </Card>
   );
 };

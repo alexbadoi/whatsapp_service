@@ -1,6 +1,7 @@
 package models
 
 import (
+	"regexp"
 	"strconv"
 	"strings"
 	"time"
@@ -60,7 +61,7 @@ func ExtractRoomListingResponse(response ResponseRoom) RoomListingResponse {
 				ID:                       room.UID,
 				Price:                    room.PricingDisplaySummary.PerRoomPerBook.ChargeTotal.AllInclusive,
 				MaxOccupancy:             room.MaxRoomOccupancy,
-				CancelationPolicy:        room.CancellationPolicy,
+				CancelationPolicy:        getRoomPolicy(room.CancellationPolicy),
 				CancelationPolicyMaxDate: parseAndFormatDate(room.CancellationInfo.FreeCancellationDate),
 				Benefits:                 make([]string, 0, len(room.Benefits)),
 			}
@@ -68,6 +69,7 @@ func ExtractRoomListingResponse(response ResponseRoom) RoomListingResponse {
 			for _, benefit := range room.Benefits {
 				roomListing.Benefits = append(roomListing.Benefits, benefit.DisplayText)
 			}
+			roomListing.Benefits = processMeals(roomListing.Benefits)
 			if room.ProviderText.Payment.Title != "" {
 				roomListing.Benefits = append(roomListing.Benefits, room.ProviderText.Payment.Title)
 			}
@@ -99,4 +101,56 @@ func parseAndFormatDate(dateString string) string {
 	location := time.FixedZone("", offset*3600)
 	t = t.In(location)
 	return t.Format("2006-01-02")
+}
+
+func getRoomPolicy(text string) string {
+	riskFreePattern := `Risk-free booking!`
+	cancelDatePattern := `Cancel before (\d{2} [A-Za-z]{3} \d{4})`
+
+	riskFreeRegex := regexp.MustCompile(riskFreePattern)
+	cancelDateRegex := regexp.MustCompile(cancelDatePattern)
+
+	riskFreeMatch := riskFreeRegex.FindString(text)
+	cancelDateMatch := cancelDateRegex.FindStringSubmatch(text)
+
+	var result []string
+
+	if riskFreeMatch != "" && len(cancelDateMatch) > 1 {
+		result = append(result, "Risk-free booking!")
+		result = append(result, cancelDateMatch[0])
+		return strings.Join(result, "\n")
+	}
+	return text
+}
+
+func processMeals(benefits []string) []string {
+	checkValues := []string{"Lunch Included", "Dinner Included", "Breakfast Included"}
+	result := []string{}
+	found := 0
+	for _, meal := range benefits {
+		for _, check := range checkValues {
+			if strings.EqualFold(meal, check) {
+				found++
+				break
+			}
+		}
+	}
+	if found == 3 {
+		for _, meal := range benefits {
+			tmpFound := false
+			for _, check := range checkValues {
+				if !strings.EqualFold(meal, check) {
+					tmpFound = true
+					break
+				}
+			}
+			if !tmpFound {
+				result = append(result, meal)
+			}
+		}
+		result = append(result, "Full Board")
+	} else {
+		result = append(result, benefits...)
+	}
+	return result
 }

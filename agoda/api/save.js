@@ -1,6 +1,6 @@
 const SaveProposal= async (data) => {
     try {
-        var res = await fetch('http://localhost:8080/api/proposal', {
+        var res = await fetch('/api/proposal', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

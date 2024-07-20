@@ -12,7 +12,7 @@ import (
 
 const url = "https://agoda-com.p.rapidapi.com/hotels/"
 
-var key = getEnv("AGODA_KEY")
+var key = getEnv("RAPIDAPI_KEY")
 
 func GetLocations(c *fiber.Ctx) error {
 	var query = c.Query("name")

@@ -23,12 +23,12 @@ class AgodaContainer extends React.Component {
       currentStep: 0,
       selectedRooms: [],
       childrenAge: [],
-      selectedRoomsIds: [],
+      locationId: 0,
     };
   }
 
   getRooms = async (p) => {
-    this.setState({ hotelSelected: p});
+    this.setState({ hotelSelected: p });
     const dates = this.state.dates;
     var data = await fetchRoomData(p.PropertyID, dates[0], dates[1], this.state.guests, p.Currency);
     if (data) {
@@ -43,7 +43,7 @@ class AgodaContainer extends React.Component {
           if (res !== null) {
             this.setState({ currentStep: 0, hotels: [], hotelSelected: null, guests: {}, dates: [], rooms: [], selectedRooms: [], childrenAge: [], selectedRoomsIds: [] });
             message.success('Proposal saved successfully');
-          }else{
+          } else {
             message.error('Something went wrong, please try again later');
           }
         });
@@ -64,47 +64,63 @@ class AgodaContainer extends React.Component {
     return selectedRooms[currentStep] !== undefined || currentStep === 4;
   };
 
-  selectRoom = (room, group) => {
+  calculateTotal = () => {
+    var total = 0;
+    for (var i = 0; i < this.state.selectedRooms.length; i++) {
+      total += this.state.selectedRooms[i].roomPricePerNight * this.state.selectedRooms[i].numberOfRooms;
+    }
+    return total.toFixed(2);
+  }
+
+  selectRoom = (room, group, roomNumber) => {
     var tmp = this.state.selectedRooms;
-    var ids = this.state.selectedRoomsIds;
     var hotel = this.state.hotelSelected;
     var proposal = {
-      stepCount: this.state.currentStep,
-      bookinDt: new Date().toISOString().split('T')[0],
-      hotelName: hotel.Name,
-      agodaPropertyID: hotel.PropertyID,
-      checkIn: this.state.dates[0],
-      checkOut: this.state.dates[1],
-      numberAdults: this.state.guests.adults,
-      numberChildren: this.state.guests.children,
-      childrenAge: this.state.childrenAge.join(','), 
-      roomName: group.name,
-      roomNumber: this.state.guests.rooms,
-      commonSpace: group.bedType,
-      roomSize: group.sizeInfo,
-      cancelationPolicyTitle: room.cancelationPolicy,
-      cancelationDeadlineDT: room.cancelationPolicyMaxDate,
-      totalPricePerNight: room.price,
-      currency: hotel.Currency,
+      dayCount: this.state.currentStep,
+      agodaHotelLocationID: this.state.locationId.id,
+      agodaLocationName: this.state.locationId.name,
+      StartDt: new Date(this.state.dates[0]).toISOString(),
+      EndDt: new Date(this.state.dates[1]).toISOString(),
+      numberOfRooms: roomNumber,
+      numberOfAdults: this.state.guests.adults,
+      numberOfChildren: this.state.guests.children,
+      childAgesPipeDelimited: this.state.childrenAge.join('|'),
+      agodaHotelID: hotel.PropertyID,
+      agodaHotelName: hotel.Name,
+      agodaHotelStars: hotel.Rating,
+      agodaHotelRating: hotel.ReviewScore,
+      agodaHotelPicsPipeDelimited: hotel.ImageURL.join('|'),
+      agodaRoomPicsPipeDelimited: group.images.join('|'),
+      sleepsCount: room.maxOccupancy,
+      roomPricePerNight: room.price,
+      RiskFreeBookingBinary: room.cancelationPolicy.includes('Risk-Free') ? 1 : 0,
+      CancelationDeadlineDt: room.cancelationPolicyMaxDate.includes("Invalid") ? null : new Date(room.cancelationPolicyMaxDate).toISOString(),
+      includesBreakfastBinary: room.benefits.includes('Breakfast') ? 1 : 0,
+      includesLunchBinary: room.benefits.includes('Lunch') ? 1 : 0,
+      includesDinnerBinary: room.benefits.includes('Dinner') ? 1 : 0,
+      bedType: group.bedType,
+      sizeSqM: group.sizeInfo,
     };
     console.log(proposal);
-    tmp[this.state.currentStep] = proposal;
-    ids[this.state.currentStep] = room.id;
-    this.setState({ selectedRooms: tmp, selectedRoomsIds: ids });
+    tmp.push(proposal);
+    this.setState({ selectedRooms: tmp });
   };
 
   render() {
     return (
       <Flex align='center' vertical>
-        <Steps current={this.state.currentStep} style={styles.main}>
+        <Flex style={styles.main} align='center' justify="space-between">
+          <Steps current={this.state.currentStep} style={{ width: '85%' }}>
             <Step title="First day" />
             <Step title="Second day" />
             <Step title="Third day" />
             <Step title="Forth day" />
             <Step title="Fifth day" />
           </Steps>
+          <Text style={{ fontSize: '1rem', fontWeight: 'bold' }} >Total: {this.calculateTotal()} $</Text>
+        </Flex>
         <Flex align="center" style={styles.main} vertical>
-          <HotelSearch setHotels={(h, g, d, c) => this.setState({ hotels: h, guests: g, dates: d, childrenAge: c  })} />
+          <HotelSearch setHotels={(h, g, d, c, l) => this.setState({ hotels: h, guests: g, dates: d, childrenAge: c, locationId: l })} />
           <Flex justify="space-between" style={{ width: '100%', margin: '1rem 0' }}>
             <Button onClick={this.handlePrevious} disabled={this.state.currentStep === 0}>
               Previous
@@ -115,19 +131,19 @@ class AgodaContainer extends React.Component {
           </Flex>
           {this.state.hotels.length > 0 ? (
             <Flex justify='space-between' style={{ width: '100%', marginTop: '1.5rem' }} align='top'>
-              <div style={{ width: '29%' }}>
+              <div style={{ width: '39%' }}>
                 {this.state.hotels.map((hotel, i) => (
-                  <HotelListing key={i} hotel={hotel} 
+                  <HotelListing key={i} hotel={hotel}
                     selectProperty={(p) => this.getRooms(p)}
                   />
                 ))}
               </div>
-              <div style={{ width: '69%' }}>
+              <div style={{ width: '59%' }}>
                 {this.state.hotelSelected && this.state.rooms.length > 0 ? (
                   this.state.rooms.map((room, i) => (
-                    <RoomsCard key={i} room={room} 
-                      inputRoomNumber={this.state.guests.rooms} setSelectedRoom={(r) => this.selectRoom(r, room)}
-                      id={this.state.selectedRoomsIds[this.state.currentStep]}
+                    <RoomsCard key={i} room={room}
+                      inputRoomNumber={this.state.guests.rooms} setSelectedRoom={(r, roomNumber) => this.selectRoom(r, room, roomNumber)}
+                      shouldDisableButton={(offer) => this.state.selectedRooms.some(r => r.roomId === offer.id && r.stepCount === this.state.currentStep)}
                     />
                   ))
                 ) : (
@@ -154,7 +170,7 @@ export default AgodaContainer;
 const styles = {
   main: {
     marginTop: '2rem',
-    maxWidth: '70%',
+    width: '98%',
   },
   noHotels: {
     marginTop: '2rem',

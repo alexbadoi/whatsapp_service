@@ -10,6 +10,7 @@ type HotelListing struct {
 	PropertyID    int64    // From Property.ID
 	Name          string   // From Content.InformationSummary.LocaleName or DefaultName
 	Rating        float64  // From Content.InformationSummary.Rating (convert to float64)
+	LocationId    int64    // From Content.InformationSummary.Address.City.ID
 	Location      string   // Combine Content.InformationSummary.Address.City.Name and Country.Name
 	TotalReviews  int      // From Content.Reviews.Cumulative.ReviewCount
 	ReviewScore   float64  // From Content.Reviews.Cumulative.Score

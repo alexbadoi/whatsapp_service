@@ -1,5 +1,5 @@
 const buildHotelApiUrl = (id, checkIn, checkOut, adult, children, room, filters) => {
-    const baseUrl = 'http://localhost:8080/api/hotels';
+    const baseUrl = '/api/hotels';
     const params = new URLSearchParams({
         id,
         checkIn,

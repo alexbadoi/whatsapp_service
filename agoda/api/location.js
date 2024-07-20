@@ -1,6 +1,6 @@
 const fetchLocations = async (inputValue) => {
     try {
-        const response = await fetch(`http://localhost:8080/api/locations?name=${inputValue}`);
+        const response = await fetch(`/api/locations?name=${inputValue}`);
         if (!response.ok) {
             throw new Error('Network response was not ok');
         }

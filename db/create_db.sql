@@ -6,40 +6,39 @@ USE data_feeds;
 
 -- Drop the agoda_data table if it exists
 DROP TABLE IF EXISTS agoda_data;
-
--- Create the agoda_data table
 CREATE TABLE IF NOT EXISTS agoda_data (
     proposal_detail_id INT PRIMARY KEY,
-    proposal_id INT NOT NULL,
+    proposal_id VARCHAR(255) NOT NULL,
     day_count INT NOT NULL,
-    agoda_hotel_location_id varchar(50),
+    agoda_hotel_location_id VARCHAR(255),
     agoda_location_name VARCHAR(255),
-    start_dt DATE NULL,
-    end_dt DATE NULL,
-    number_of_rooms INT,
-    number_of_adults INT,
-    number_of_children INT,
-    children_ages_pipe_delimited VARCHAR(50),
+    start_dt DATETIME NOT NULL,
+    end_dt DATETIME NOT NULL,
+    number_of_rooms INT NOT NULL,
+    number_of_adults INT NOT NULL,
+    number_of_children INT NOT NULL,
+    child_ages_pipe_delimited VARCHAR(50),
+    agoda_hotel_id INT,
     agoda_hotel_name VARCHAR(255),
-    agoda_hodel_id INT,
-    agoda_review_score FLOAT,
-    agoda_review_count INT,
-    best_price_per_night DECIMAL(10, 2),
-    agoda_room_pic_pipe_delimited TEXT,
-    agoda_hotel_pic_pipe_delimited TEXT,
-    sleeps_count INT,
-    room_price_per_night DECIMAL(10, 2),
+    agoda_hotel_stars FLOAT,
+    agoda_hotel_rating FLOAT,
+    agoda_hotel_ratings_count INT,
+    agoda_hotel_pics_pipe_delimited TEXT,
+    agoda_room_pics_pipe_delimited TEXT,
+    sleeps_count INT NOT NULL,
+    room_price_per_night DECIMAL(10,2),
     risk_free_booking_binary TINYINT,
-    cancelation_deadline_dt DATE,
-    includes_breakfast_bainary TINYINT,
-    includeas_lunch_binary TINYINT,
+    cancelation_deadline_dt DATETIME,
+    includes_breakfast_binary TINYINT,
+    includes_lunch_binary TINYINT,
     includes_dinner_binary TINYINT,
     bed_type VARCHAR(255),
-    size_sqm FLOAT,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    deleted_at TIMESTAMP NULL DEFAULT NULL,
-    active_flg INT DEFAULT 1
+    size_sqm VARCHAR(255),
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    deleted_at DATETIME,
+    active_flg INT DEFAULT 1,
+    INDEX idx_deleted_at (deleted_at)
 );
 
 -- Drop the user table if it exists
@@ -90,8 +89,8 @@ CREATE TABLE IF NOT EXISTS contact_whatsapp (
     active_flg INT DEFAULT 1
 );
 
--- Load data from CSV file
-LOAD DATA INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 9.0\\Uploads\\contact_whatsapp.csv'
+/*-- Load data from CSV file
+LOAD DATA INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 9.0\\Uploads\\contact_.csv'
 INTO TABLE contact_whatsapp
 CHARACTER SET utf8mb4
 FIELDS TERMINATED BY ','
@@ -104,7 +103,7 @@ SET
     updated_at = IFNULL(NULLIF(@updated_at, ''), CURRENT_TIMESTAMP),
     deleted_at = NULLIF(@deleted_at, '');
 
-
+*/
 
 -- Drop table if it exists
 DROP TABLE IF EXISTS tag_ref;
@@ -119,6 +118,7 @@ CREATE TABLE IF NOT EXISTS tag_ref (
     active_flg INT DEFAULT 1
 );
 
+/*
 -- Load data from CSV file
 LOAD DATA INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 9.0\\Uploads\\tag_ref.csv'
 INTO TABLE tag_ref
@@ -132,7 +132,7 @@ SET
     created_at = IFNULL(NULLIF(@created_at, ''), CURRENT_TIMESTAMP),
     updated_at = IFNULL(NULLIF(@updated_at, ''), CURRENT_TIMESTAMP),
     deleted_at = NULLIF(@deleted_at, '');
-    
+*/
     
 -- Grant all privileges on the data_feeds database to the users
 
