@@ -101,6 +101,7 @@ volumes:
 ## Architecture Description
 
 The application architecture is designed to be modular and scalable, leveraging microservices and containerization. Here is a detailed description of each component:
+![Alt text](./architecture.png)
 
 ### Proposed Architecture Components
 
