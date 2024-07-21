@@ -32,7 +32,7 @@ The application architecture is designed to be modular and scalable, leveraging 
     - Uses main-frontend/api/ endpoint
 
 2. **main-backend**:
-    - Manages user sessions, authentication, and core functionalities.
+    - Manages user sessions, authentication
     - Uses company/api/v1/ endpoint
   
 3. **comms-api**:
