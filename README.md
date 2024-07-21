@@ -37,6 +37,7 @@ The application architecture is designed to be modular and scalable, leveraging 
 3. **comms-api**:
     - Manages chat functionality, including message storage, retrieval, and real-time updates.
     - Integrates with the existing Go backend for user authentication.
+    - [@asternic/wuzapi](https://github.com/asternic/wuzapi)
     - WuzAPI - an implementation of [@tulir/whatsmeow](https://github.com/tulir/whatsmeow) library as a simple RESTful API service with multiple device support and concurrent sessions.
     - Uses comms-api/api/whatsapp/ endpoint
 
