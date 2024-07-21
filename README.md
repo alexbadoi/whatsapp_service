@@ -29,7 +29,6 @@ The application architecture is designed to be modular and scalable, leveraging 
 1. **main-frontend**:
     - We are using the LizAnt react template for the main project athough diferent templaets may be provided for individual components. See templates inside ./templates/
     - Uses main-frontend/api/ endpoint
-    - 
 
 2. **main-backend**:
     - Manages user sessions, authentication, and core functionalities.
