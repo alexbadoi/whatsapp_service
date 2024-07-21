@@ -3,7 +3,7 @@
 
 For any questions, feel free to reach out on Discord: ![Discord](https://img.shields.io/badge/Discord-ak308465-7289DA)
 
-# Objective Dev 1 
+# Objective Dev 2
 
 The main task is to implement a WhatsApp API service using Docker and integrate the WhatsApp Web API into the LizAnt UI React template provided.
 
