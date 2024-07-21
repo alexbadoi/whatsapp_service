@@ -8,7 +8,7 @@ For any questions, feel free to reach out on Discord: ![Discord](https://img.shi
 The main task is to implement a WhatsApp API service using Docker and integrate the WhatsApp Web API into the LizAnt UI React template provided.
 
 ### Stack
-- Golang + Fiber + GORM
+- Golang (Fiber + GORM)
 - ReactJS
 - K8 + NGINX / Traefik
 - PostgreSQL
