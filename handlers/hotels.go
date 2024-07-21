@@ -52,6 +52,7 @@ func GetHotels(c *fiber.Ctx) error {
 		return c.SendString("Internal server error")
 	}
 	req.Header.Set("x-rapidapi-key", key)
+	log.Println(searchUrl)
 	resp, err := http.DefaultClient.Do(req)
 	if err != nil {
 		log.Println(err)
