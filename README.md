@@ -71,8 +71,8 @@ There is an organization with multiple users using the React web-app.
 - Modify the chat box for better screen fit.
 - Add a favorites section to pin contacts.
 - Enhance the contact card to integrate user-specific information and tags from the database (we need to display a database 'Tag' and basic contact info on left pane. see screenshot below with dashed line in red. 
-- **Admin Screen:** There is a Profile page already available inside the template. Add section where user can request a QR code and register their WhatsApp.
-- 
+- **Admin Screen:** There is a Profile page already available. YAdd section where user can request a QR code and register their WhatsApp.
+
 ![Alt text](./whatsapp-login.png)
 - 
 - **Chat App:** Develop a chat application for users to communicate. Ensure it can handle 3-4 concurrent users.
