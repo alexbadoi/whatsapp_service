@@ -2,6 +2,7 @@
 ## Contact
 
 For any questions, feel free to reach out on Discord: ![Discord](https://img.shields.io/badge/Discord-ak308465-7289DA)
+All projects will be delivered and paid via fiverr.
 
 # Objective Dev 2
 
