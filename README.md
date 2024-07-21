@@ -71,7 +71,14 @@ There is an organization with multiple users using the React web-app.
 - Add a favorites section to pin contacts.
 - Enhance the contact card to integrate user-specific information and tags from the database.
 - **Admin Screen:** Create a page where a user can request a QR code and register their WhatsApp. This page will handle the output from the WhatsApp service for QR code registration.
+- 
+![Alt text](./whatsapp-login.png)
+- 
 - **Chat App:** Develop a chat application for users to communicate. Ensure it can handle 3-4 concurrent users.
+
+![Alt text](./web-app.png)
+
+- 
 
 - 
 ## MySQL Schema Credentials with Data Example
