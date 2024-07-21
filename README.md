@@ -56,7 +56,7 @@ The application architecture is designed to be modular and scalable, leveraging 
 
 ## Chat Scenarios / Functionality
 
-There is an organization with multiple users using the React web-app.
+There is an organization with multiple users using the React web-app. You can assume all users are admins. 
 
 1. **Register WhatsApp web** - The user must log in and receive a QR code to register WhatsApp web. Users authenticated in main-backend. There are multiple users each with unique whatsapp. 
 2. **De-Register WhatsApp web** - The user must be able to de-register WhatsApp web.
