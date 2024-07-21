@@ -5,7 +5,7 @@ For any questions, feel free to reach out on Discord: ![Discord](https://img.shi
 
 # Objective Dev 2
 
-The main task is to implement a WhatsApp API service using Docker and integrate the WhatsApp Web API into the LizAnt UI React template provided.
+The main task is to implement a WhatsApp API service using Docker and integrate the WhatsApp Web API into the LizAnt UI React template provided. This is an integration project requiring webhook and api endpoint work to link the WhatsappAPI service to a web-UI chat page. There are other people working on this project who can assist with various tasks such as K8 deployment and data modelling and sql work. Your work needs to be in scope - Implement the chat functionality. 
 
 ### Stack
 - **Backend** - Golang (Fiber + GORM)
